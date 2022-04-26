@@ -15,6 +15,7 @@ def poseCallback(pose_message):
     x= pose_message.x
     y= pose_message.y
     yaw = pose_message.theta
+    #print("pose_message",pose_message,"***")
     #print "pose callback"
     #print ('x = {}'.format(pose_message.x)) #new in python 3
     #print ('y = %f' %pose_message.y) #used in python 2
