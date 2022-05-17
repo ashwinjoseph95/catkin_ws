@@ -105,6 +105,34 @@ def rotate (angular_speed_degree, relative_angle_degree, clockwise):
     velocity_message.angular.z =0
     velocity_publisher.publish(velocity_message)
 
+def go_to_goal(x_goal, y_goal):
+    global x
+    global y, z, yaw
+
+    velocity_message = Twist()
+    cmd_vel_topic='/turtle1/cmd_vel'
+
+    while (True):
+        K_linear = 0.5 
+        distance = abs(math.sqrt(((x_goal-x) ** 2) + ((y_goal-y) ** 2)))
+
+        linear_speed = distance * K_linear
+
+        K_angular = 4.0
+        desired_angle_goal = math.atan2(y_goal-y, x_goal-x)
+        angular_speed = (desired_angle_goal-yaw)*K_angular
+
+        velocity_message.linear.x = linear_speed
+        velocity_message.angular.z = angular_speed
+
+        velocity_publisher.publish(velocity_message)
+        print ('x=', x, 'y=',y)
+
+
+        if (distance <0.01):
+            break
+
+
 
 if __name__ == '__main__':
     try:
@@ -120,7 +148,8 @@ if __name__ == '__main__':
         time.sleep(2)
 
         #move(1.0, 2.0, False)
-        rotate(30, 90, True)
+        #rotate(30, 90, True)
+        go_to_goal(7,6)
        
     except rospy.ROSInterruptException:
         rospy.loginfo("node terminated.")
